@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Operacje</title>
+      <style>
+        body {
+            font-family: Arial, sans-serif; /* Makes text more readable with a nice font */
+            background-color: #f4f4f4; /* Light grey background */
+            margin: 40px;
+        }
+        h1, h2 {
+            color: #333; /* Dark grey text for headings */
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ccc; /* Adds subtle shadow to forms */
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #0084ff; /* Bright blue background */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: white;
+            margin-bottom: 5px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        a {
+            text-decoration: none;
+            color: #0084ff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Operacje: </h1>
+    <ul>
+        {% for operacja in lista %}
+        <li>Data {{ operacja.data }} na kwote {{ operacja.wartosc }} na podstawie {{ operacja.dokument }} konto1: {{operacja.konto1}}| numer operacji {{operacja.id}}</li>
+        {% endfor %}
+    </ul>
+    <
+    <a href="/">Back</a>
+</body>
+</html>

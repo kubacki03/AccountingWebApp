@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Java > C#</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Makes text more readable with a nice font */
+            background-color: #f4f4f4; /* Light grey background */
+            margin: 40px;
+        }
+        h1, h2 {
+            color: #333; /* Dark grey text for headings */
+
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ccc; /* Adds subtle shadow to forms */
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #0084ff; /* Bright blue background */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: white;
+            margin-bottom: 5px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        a {
+            text-decoration: none;
+            color: #0084ff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .form-container {
+            display: flex;
+            gap: 20px;
+        }
+        .form-container form {
+            flex: 1;
+        }
+    </style>
+    <script>
+        function updateOptions(selectedAccountId, affectedAccountId) {
+            var selectedType = document.getElementById(selectedAccountId).value;
+            var affectedTypeSelect = document.getElementById(affectedAccountId);
+            if (selectedType === 'kredytowa') {
+                affectedTypeSelect.value = 'debetowa';
+            } else {
+                affectedTypeSelect.value = 'kredytowa';
+            }
+        }
+    </script>
+</head>
+<body>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <h1>Harmonia - program do rachunkowości</h1>
+    <form action="/dodaj-operacje" method="post">
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data" required>
+        <label for="wartosc">Wartość:</label>
+       <input type="number" step="1" id="wartosc" name="wartosc" required >
+
+        <label for="dokument">Dokument:</label>
+        <input type="text" id="dokument" name="dokument" required>
+
+        <label for="konto1">Konto 1:</label>
+        <select id="konto1" name="konto1" required>
+            {% for konto in konta %}
+            <option value="{{ konto.nazwa }}">{{konto.id}}) {{ konto.nazwa }}</option>
+            {% endfor %}
+        </select>
+        <select id="konto1_type" name="konto1_type" required onchange="updateOptions('konto1_type', 'konto2_type')">
+            <option value="kredytowa">Kredytowa</option>
+            <option value="debetowa">Debetowa</option>
+        </select>
+
+        <label for="konto2">Konto 2:</label>
+        <select id="konto2" name="konto2" required>
+            {% for konto in konta %}
+            <option value="{{ konto.nazwa }}"> {{konto.id}}) {{ konto.nazwa }}</option>
+            {% endfor %}
+        </select>
+        <select id="konto2_type" name="konto2_type" required onchange="updateOptions('konto2_type', 'konto1_type')">
+            <option value="debetowa">Debetowa</option>
+            <option value="kredytowa">Kredytowa</option>
+        </select>
+        <label for="numerOperacji">Numer operacji:</label>
+        <input type="text" id="numerOperacji" name=numerOperacji required >
+
+        <button type="submit">Dodaj Operację</button>
+    </form>
+    <h2>Konta</h2>
+    <ul>
+        {% for konto in konta %}
+        <li>{{konto.id}}) {{ konto.nazwa }}  ({{ konto.typKonta }}) - <a href="/operacje/{{ konto.nazwa }}">Operacje</a></li>
+        {% endfor %}
+    </ul>
+    <div class="form-container">
+        <form action="/ustaw-stan-poczatkowy" method="post">
+            <h2>Ustaw Stan Początkowy Konta</h2>
+            <label for="konto">Konto:</label>
+            <select id="konto" name="konto" required>
+                {% for konto in konta %}
+                <option value="{{ konto.nazwa }}">{{ konto.nazwa }}</option>
+                {% endfor %}
+            </select>
+            <label for="stan_poczatkowy">Stan Początkowy:</label>
+            <input type="number" id="stan_poczatkowy" name="stan_poczatkowy" required>
+            <label for="data">Data:</label>
+            <input type="date" id="dataStanu" name="dataStanu">
+            <button type="submit">Ustaw Stan</button>
+        </form>
+        <form action="/bilans" method="get">
+            <h2>Bilans</h2>
+            <label for="data_graniczna">Dzien bilansowy:</label>
+            <input type="date" id="data_graniczna" name="data_graniczna">
+            <button type="submit">Pokaż Bilans</button>
+        </form>
+    </div>
+    <form action="{{ url_for('reset') }}" method="post">
+        <button type="submit" onclick="return confirm('Czy chcesz usunac wszystkie dane?');">Resetowanie operacji</button>
+    </form>
+
+
+
+
+
+</body>
+</html>

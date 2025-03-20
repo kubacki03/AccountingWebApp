@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bilans</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #0044cc;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #0044cc;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        strong {
+            color: #0044cc;
+        }
+        a {
+            display: block;
+            width: 100px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #0044cc;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        a:hover {
+            background-color: #003399;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bilans</h1>
+    <h2>Dzien bilansowy: {{ data_graniczna if data_graniczna else "Wszystkie operacji w historii" }}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Aktywa</th>
+                <th>Wartość Aktywa</th>
+                <th>Pasywa</th>
+                <th>Wartość Pasywa</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in zipped_aktywa_pasywa %}
+            <tr>
+                <td>{{ row[0][0] if row[0] else '' }}</td>
+                <td>{{ row[0][1] if row[0] else '' }}</td>
+                <td>{{ row[1][0] if row[1] else '' }}</td>
+                <td>{{ row[1][1] if row[1] else '' }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td><strong>Suma Aktyw</strong></td>
+                <td><strong>{{ podsumowanie['suma_aktywa'] }}</strong></td>
+                <td><strong>Suma Pasyw</strong></td>
+                <td><strong>{{ podsumowanie['suma_pasywa'] }}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/">Back</a>
+</body>
+</html>
